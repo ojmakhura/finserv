@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  finserv-api:
+    build: .
+    container_name: finserv-api
+    ports:
+      - "${PORT:-8678}:${PORT:-8678}"
+    environment:
+      - SOLR_BASE_URL=${SOLR_BASE_URL}
+      - SOLR_CORE=${SOLR_CORE}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PORT=${PORT:-8678}
+    volumes:
+      # Mount a volume for temporary files if needed
+      - ./temp:/tmp/app_temp
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT:-8678}/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
