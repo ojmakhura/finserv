@@ -8,11 +8,15 @@ Created on Mon Jul 21 06:53:27 2025
 import os
 import time
 import requests
+import urllib3
 import fitz  # PyMuPDF
 import google.generativeai as genai
 import hashlib
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from dotenv import load_dotenv
+
+# Disable SSL warnings for local development
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Load environment variables from .env file
 load_dotenv()
